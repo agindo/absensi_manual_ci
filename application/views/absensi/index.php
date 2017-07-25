@@ -23,8 +23,10 @@
 			<th width="20"><small>&nbsp;</small></th>
 			<th width="150"><small>Tanggal</small></th>
 			<th><small>Nama Karyawan</small></th>
-			<th width="100"><small>Shift I</small></th>
-			<th width="100"><small>Shift II</small></th>
+			<th width="50"><small>Shift I</small></th>
+			<th width="50"><small></small></th>
+			<th width="50"><small>Shift II</small></th>
+			<th width="50"><small></small></th>
 			<th width="10"><small>&nbsp;</small></th>
 			<th width="10"><small>&nbsp;</small></th>
 		</tr>
@@ -38,8 +40,10 @@
 			<td style="text-align:center"><small><?php echo $no;?></small></td>
 			<td><small><?php echo $value->hari.", ".$value->tgl." ".$value->bln." ".$value->thn;?></small></td>
 			<td><small><?php echo $value->nama_karyawan;?></small></td>
-			<td><small><?php echo $value->jam_masuk." - ".$value->jam_keluar;?></small></td>
-			<td><small><?php echo $value->jam_lembur_masuk." - ".$value->jam_lembur_keluar;?></small></td>
+			<td style="text-align:center"><small><?php echo $value->jam_masuk;?></small></td>
+			<td style="text-align:center"><small><?php echo $value->jam_keluar;?></small></td>
+			<td style="text-align:center"><small><?php echo $value->jam_lembur_masuk;?></small></td>
+			<td style="text-align:center"><small><?php echo $value->jam_lembur_keluar;?></small></td>
 			<td><small><?php echo anchor('absensi/update/'.$value->id, '<i class="fa fa-pencil"></i>', array("class"=>"btn btn-info btn-xs btn-block"));?></small></td>
 			<td><small><?php echo anchor('absensi/delete/'.$value->id, '<i class="fa fa-remove"></i>', array("class"=>"btn btn-danger btn-xs btn-block"));?></small></td>
 		</tr>

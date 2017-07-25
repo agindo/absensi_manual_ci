@@ -27,8 +27,8 @@
 				<tr>
 					<th width="50" style="text-align: center"><small>No</small></th>
 					<th><small>Nama Karyawan</small></th>
-					<th width="150" style="text-align: center"><small>Shift I</small></th>
-					<th width="150" style="text-align: center"><small>Shift II</small></th>
+					<th style="text-align: center" colspan="2"><small>Shift I</small></th>
+					<th style="text-align: center" colspan="2"><small>Shift II</small></th>
 				</tr>
 				<?php
 					$no = 1;
@@ -37,8 +37,11 @@
 				<tr>
 					<td style="text-align: center"><small><?php echo $no;?></small></td>
 					<td><small><?php echo $value->nama_karyawan?></small></td>
-					<td style="text-align: center"><small><?php echo $value->jam_masuk." - ".$value->jam_keluar;?></small></td>
-					<td style="text-align: center"><small><?php echo $value->jam_lembur_masuk." - ".$value->jam_lembur_keluar;?></small></td>
+					<td width="100" style="text-align: center"><small><?php echo $value->jam_masuk;?></small></td>
+					<td width="100" style="text-align: center"><small><?php echo $value->jam_keluar;?></small></td>
+					<td width="100" style="text-align: center"><small><?php echo $value->jam_lembur_masuk;?>
+					<td width="100" style="text-align: center"><small><?php echo $value->jam_lembur_keluar;?>
+					</small></td>
 				</tr>
 				<?php
 						$no++;

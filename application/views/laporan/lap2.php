@@ -82,8 +82,8 @@
 						<tr>
 							<th width="50" style="text-align:center"><small>No</small></th>
 							<th><small>Tanggal</small></th>
-							<th width="130" style="text-align:center"><small>Shift I</small></th>
-							<th width="130" style="text-align:center"><small>Shift II</small></th>
+							<th colspan="2" style="text-align:center"><small>Shift I</small></th>
+							<th colspan="2" style="text-align:center"><small>Shift II</small></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -95,8 +95,10 @@
 						<tr>
 							<td style="text-align:center"><small><?php echo $no;?></small></td>
 							<td><small><?php echo $value->hari.", ".$value->tgl." ".$value->bln." ".$value->thn;?></small></td>
-							<td style="text-align:center"><small><?php echo $value->jam_masuk." - ".$value->jam_keluar;?></small></td>
-							<td style="text-align:center"><small><?php echo $value->jam_lembur_masuk." - ".$value->jam_lembur_keluar;?></small></td>
+							<td style="text-align:center"><small><?php echo $value->jam_masuk;?></small></td>
+							<td style="text-align:center"><small><?php echo $value->jam_keluar;?></small></td>
+							<td style="text-align:center"><small><?php echo $value->jam_lembur_masuk;?></small></td>
+							<td style="text-align:center"><small><?php echo $value->jam_lembur_keluar;?></small></td>
 						</tr>
 							<?php
 									$no++;
@@ -104,6 +106,8 @@
 							}else{
 						?>
 						<tr>
+							<td style="text-align:center"><small></small></td>
+							<td style="text-align:center"><small></small></td>
 							<td style="text-align:center"><small></small></td>
 							<td style="text-align:center"><small></small></td>
 							<td style="text-align:center"><small></small></td>
