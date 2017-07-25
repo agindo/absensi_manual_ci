@@ -36,7 +36,7 @@
 			$no = 1;
 			foreach ($record->result() as $value) {
 		?>
-		<tr>
+		<tr style="<?php if($value->hari == "Sabtu"){echo"background-color:#F0FFC9";}else if($value->hari == "Minggu"){echo"background-color:#F5F7BD";}else{}?>">
 			<td style="text-align:center"><small><?php echo $no;?></small></td>
 			<td><small><?php echo $value->hari.", ".$value->tgl." ".$value->bln." ".$value->thn;?></small></td>
 			<td><small><?php echo $value->nama_karyawan;?></small></td>

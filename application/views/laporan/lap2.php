@@ -81,7 +81,7 @@
 					<thead>
 						<tr>
 							<th width="50" style="text-align:center"><small>No</small></th>
-							<th><small>Tanggal</small></th>
+							<th><small>Hari, Tanggal</small></th>
 							<th colspan="2" style="text-align:center"><small>Shift I</small></th>
 							<th colspan="2" style="text-align:center"><small>Shift II</small></th>
 						</tr>
@@ -92,7 +92,7 @@
 								$no = 1;
 								foreach($record->result() as $value){
 							?>
-						<tr>
+						<tr style="<?php if($value->hari == "Sabtu"){echo"background-color:#F0FFC9";}else if($value->hari == "Minggu"){echo"background-color:#F5F7BD";}else{}?>">
 							<td style="text-align:center"><small><?php echo $no;?></small></td>
 							<td><small><?php echo $value->hari.", ".$value->tgl." ".$value->bln." ".$value->thn;?></small></td>
 							<td style="text-align:center"><small><?php echo $value->jam_masuk;?></small></td>
