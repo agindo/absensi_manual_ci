@@ -1,31 +1,31 @@
 <?php
-	class Model_Crud extends CI_Model{
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-		function show($table){
-			$this->db->order_by('id', 'desc');
-			return $this->db->get($table);
-		}
+class Model_Crud extends CI_Model {
 
-		function add($table, $data){
-			$this->db->insert($table, $data);
-		}
-
-		function update($table, $data, $id){
-			$this->db->where('id', $id);
-			$this->db->update($table, $data);
-		}
-
-		function get_one($table, $parameter){
-			return $this->db->get_where($table, $parameter);
-		}
-
-		function delete($table, $id){
-			$this->db->where('id', $id);
-			$this->db->delete($table);
-		}
-
-		function show_datetime($month, $year){
-			return $this->db->query("SELECT CASE $month WHEN 1 THEN 'Januari' WHEN 2 THEN 'Febuari' WHEN 3 THEN 'Maret' WHEN 4 THEN 'April' WHEN 5 THEN 'Mei' WHEN 6 THEN 'Juni' WHEN 7 THEN 'Juli' WHEN 8 THEN 'Agustus' WHEN 9 THEN 'September' WHEN 10 THEN 'Oktober' WHEN 11 THEN 'November' WHEN 12 THEN 'Desember' END AS bln, $year AS thn");
-		}
-		
+	public function add($table, $data)
+	{
+		$this->db->insert($table, $data);
 	}
+
+	public function get_by_id($table, $id)
+	{
+		$this->db->from($table);
+		$this->db->where('id',$id);
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
+	public function update($table, $where, $data)
+	{
+		$this->db->update($table, $data, $where);
+	}
+
+	public function delete($table, $id)
+	{
+		$this->db->where('id', $id);
+		$this->db->delete($table);
+	}
+
+}

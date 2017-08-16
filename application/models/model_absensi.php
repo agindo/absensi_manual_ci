@@ -1,24 +1,64 @@
 <?php
-	class Model_Absensi extends CI_Model{
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-		function show(){
-			return $this->db->query("SELECT id, nama_karyawan, jam_masuk, jam_keluar, jam_lembur_masuk, jam_lembur_keluar, CASE DAYOFWEEK(tanggal) WHEN 1 THEN 'Minggu' WHEN 2 THEN 'Senin' WHEN 3 THEN 'Selasa' WHEN 4 THEN 'Rabu' WHEN 5 THEN 'Kamis' WHEN 6 THEN 'Jumat' WHEN 7 THEN 'Sabtu' END AS hari, DAY(tanggal) AS tgl, CASE MONTH(tanggal) WHEN 1 THEN 'Januari' WHEN 2 THEN 'Febuari' WHEN 3 THEN 'Maret' WHEN 4 THEN 'April' WHEN 5 THEN 'Mei' WHEN 6 THEN 'Juni' WHEN 7 THEN 'Juli' WHEN 8 THEN 'Agustus' WHEN 9 THEN 'September' WHEN 10 THEN 'Oktober' WHEN 11 THEN 'November' WHEN 12 THEN 'Desember' END AS bln, YEAR(tanggal) AS thn FROM absensi ORDER BY id DESC");
+class Model_Absensi extends CI_Model {
+
+	var $table = 'absensi';
+	var $column_order = array('nama_karyawan',null); 
+	var $column_search = array('nama_karyawan'); 
+	var $order = array('id' => 'desc');
+
+	private function _get_datatables_query()
+	{
+		$this->db->from($this->table);
+		$i = 0;
+		foreach ($this->column_search as $item){
+			if($_POST['search']['value']){				
+				if($i===0){
+					$this->db->group_start();
+					$this->db->like($item, $_POST['search']['value']);
+				}else{
+					$this->db->or_like($item, $_POST['search']['value']);
+				}
+
+				if(count($this->column_search) - 1 == $i)
+					$this->db->group_end();
+			}
+			$i++;
 		}
-
-		function show_lap1(){
-			return $this->db->query("SELECT id, nama_karyawan, jam_masuk, jam_keluar, jam_lembur_masuk, jam_lembur_keluar, CASE DAYOFWEEK(tanggal) WHEN 1 THEN 'Minggu' WHEN 2 THEN 'Senin' WHEN 3 THEN 'Selasa' WHEN 4 THEN 'Rabu' WHEN 5 THEN 'Kamis' WHEN 6 THEN 'Jumat' WHEN 7 THEN 'Sabtu' END AS hari, DAY(tanggal) AS tgl, CASE MONTH(tanggal) WHEN 1 THEN 'Januari' WHEN 2 THEN 'Febuari' WHEN 3 THEN 'Maret' WHEN 4 THEN 'April' WHEN 5 THEN 'Mei' WHEN 6 THEN 'Juni' WHEN 7 THEN 'Juli' WHEN 8 THEN 'Agustus' WHEN 9 THEN 'September' WHEN 10 THEN 'Oktober' WHEN 11 THEN 'November' WHEN 12 THEN 'Desember' END AS bln, YEAR(tanggal) AS thn FROM absensi WHERE tanggal=CURDATE() ORDER BY tanggal DESC");
+		
+		if(isset($_POST['order'])){
+			$this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+		}else if(isset($this->order)){
+			$order = $this->order;
+			$this->db->order_by(key($order), $order[key($order)]);
 		}
-
-		function search1($date){
-			return $this->db->query("SELECT id, nama_karyawan, jam_masuk, jam_keluar, jam_lembur_masuk, jam_lembur_keluar, CASE DAYOFWEEK(tanggal) WHEN 1 THEN 'Minggu' WHEN 2 THEN 'Senin' WHEN 3 THEN 'Selasa' WHEN 4 THEN 'Rabu' WHEN 5 THEN 'Kamis' WHEN 6 THEN 'Jumat' WHEN 7 THEN 'Sabtu' END AS hari, DAY(tanggal) AS tgl, CASE MONTH(tanggal) WHEN 1 THEN 'Januari' WHEN 2 THEN 'Febuari' WHEN 3 THEN 'Maret' WHEN 4 THEN 'April' WHEN 5 THEN 'Mei' WHEN 6 THEN 'Juni' WHEN 7 THEN 'Juli' WHEN 8 THEN 'Agustus' WHEN 9 THEN 'September' WHEN 10 THEN 'Oktober' WHEN 11 THEN 'November' WHEN 12 THEN 'Desember' END AS bln, YEAR(tanggal) AS thn FROM absensi WHERE tanggal='$date' ORDER BY tanggal DESC");	
-		}
-
-		function search2($nama, $bulan, $tahun){
-			return $this->db->query("SELECT id, nama_karyawan, jam_masuk, jam_keluar, jam_lembur_masuk, jam_lembur_keluar, tanggal, CASE DAYOFWEEK(tanggal) WHEN 1 THEN 'Minggu' WHEN 2 THEN 'Senin' WHEN 3 THEN 'Selasa' WHEN 4 THEN 'Rabu' WHEN 5 THEN 'Kamis' WHEN 6 THEN 'Jumat' WHEN 7 THEN 'Sabtu' END AS hari, DAY(tanggal) AS tgl, CASE MONTH(tanggal) WHEN 1 THEN 'Januari' WHEN 2 THEN 'Febuari' WHEN 3 THEN 'Maret' WHEN 4 THEN 'April' WHEN 5 THEN 'Mei' WHEN 6 THEN 'Juni' WHEN 7 THEN 'Juli' WHEN 8 THEN 'Agustus' WHEN 9 THEN 'September' WHEN 10 THEN 'Oktober' WHEN 11 THEN 'November' WHEN 12 THEN 'Desember' END AS bln, YEAR(tanggal) AS thn FROM absensi WHERE nama_karyawan='$nama' AND MONTH(tanggal)='$bulan' AND YEAR(tanggal)='$tahun' ORDER BY tanggal");	
-		}
-
-		function search3($parameter){	
-			return $this->db->get_where('absensi', $parameter);
-		}
-
 	}
+
+	function get_datatables()
+	{
+		$this->_get_datatables_query();
+		if($_POST['length'] != -1)
+		$this->db->limit($_POST['length'], $_POST['start']);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function count_filtered()
+	{
+		$this->_get_datatables_query();
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	public function count_all()
+	{
+		$this->db->from($this->table);
+		return $this->db->count_all_results();
+	}
+
+	public function show_data(){
+		return $this->db->get('posisi');
+	}
+
+}
